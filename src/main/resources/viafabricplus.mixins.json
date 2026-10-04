@@ -68,6 +68,7 @@
     "features.v1_0_0.MixinLivingEntity",
     "features.v1_1.MixinPistonBaseBlock",
     "features.v1_10.MixinBaseRailBlock",
+    "features.v1_10.MixinBrewingStandMenu",
     "features.v1_10.MixinFlowerPotBlock",
     "features.v1_10.MixinGuiGraphicsExtractor",
     "features.v1_10.MixinPlayer",
