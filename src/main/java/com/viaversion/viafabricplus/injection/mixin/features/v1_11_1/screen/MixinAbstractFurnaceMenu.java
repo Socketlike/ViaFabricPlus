@@ -30,7 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,12 +53,8 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Inject(method = "isFuel", at = @At("HEAD"), cancellable = true)
     private void fixQuickMoveFuel(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
-        if (ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
-            cir.setReturnValue(FurnaceFuels1_11_2.getFuels_1_2_5().isFuel(itemStack));
-        } else if (ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11)) {
-            cir.setReturnValue(FurnaceFuels1_11_2.getFuels_1_3_1().isFuel(itemStack));
-        } else if (ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_14)) {
-            cir.setReturnValue(FurnaceFuels1_11_2.getFuels_1_11().isFuel(itemStack));
+        if (ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_14)) {
+            cir.setReturnValue(FurnaceFuels1_11_2.isFuel(itemStack));
         }
     }
 

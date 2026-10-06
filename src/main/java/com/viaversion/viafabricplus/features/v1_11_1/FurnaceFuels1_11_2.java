@@ -21,188 +21,101 @@
 
 package com.viaversion.viafabricplus.features.v1_11_1;
 
+import com.mojang.datafixers.util.Pair;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
+import com.viaversion.viaversion.libs.gson.JsonArray;
+import com.viaversion.viaversion.libs.gson.JsonElement;
+import com.viaversion.viaversion.libs.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Blocks;
-import java.util.ArrayList;
+import org.jspecify.annotations.Nullable;
 
 public final class FurnaceFuels1_11_2 {
 
-    private static FurnaceFuels1_11_2 FUELS_1_11 = null;
-    private static FurnaceFuels1_11_2 FUELS_1_3_1 = null;
-    private static FurnaceFuels1_11_2 FUELS_1_2_5 = null;
+    private static final List<Pair<Fuel, ProtocolVersionRange>> LEGACY_FUELS = new ArrayList<>();
+    private static Set<Item> FUELS;
 
-    private final ArrayList<Item> values;
-
-    private FurnaceFuels1_11_2(final ArrayList<Item> values) {
-        this.values = values;
-    }
-
-    public boolean isFuel(final ItemStack itemStack) {
-        return this.values.contains(itemStack.getItem());
-    }
-
-    public static FurnaceFuels1_11_2 getFuels_1_11() {
-        if (FUELS_1_11 == null)
-            FUELS_1_11 = new FurnaceFuels1_11_2.Builder()
-                .add(Items.LAVA_BUCKET)
-                .add(Blocks.COAL_BLOCK)
-                .add(Items.BLAZE_ROD)
-                .add(Items.COAL)
-                .add(Items.CHARCOAL)
-                .add(ItemTags.LOGS)
-                .add(ItemTags.PLANKS)
-                .add(ItemTags.WOODEN_STAIRS)
-                .add(ItemTags.WOODEN_TRAPDOORS)
-                .add(ItemTags.WOODEN_PRESSURE_PLATES)
-                .add(ItemTags.WOODEN_FENCES)
-                .add(ItemTags.FENCE_GATES)
-                .add(Blocks.NOTE_BLOCK)
-                .add(Blocks.BOOKSHELF)
-                .add(Blocks.JUKEBOX)
-                .add(Blocks.CHEST)
-                .add(Blocks.TRAPPED_CHEST)
-                .add(Blocks.CRAFTING_TABLE)
-                .add(Blocks.DAYLIGHT_DETECTOR)
-                .add(ItemTags.BANNERS)
-                .add(Items.BOW)
-                .add(Items.FISHING_ROD)
-                .add(Blocks.LADDER)
-                .add(ItemTags.SIGNS)
-                .add(Items.WOODEN_SHOVEL)
-                .add(Items.WOODEN_SWORD)
-                .add(Items.WOODEN_SPEAR)
-                .add(Items.WOODEN_HOE)
-                .add(Items.WOODEN_AXE)
-                .add(Items.WOODEN_PICKAXE)
-                .add(ItemTags.WOODEN_DOORS)
-                .add(ItemTags.BOATS)
-                .add(ItemTags.WOOL)
-                .add(ItemTags.WOODEN_BUTTONS)
-                .add(Items.STICK)
-                .add(ItemTags.SAPLINGS)
-                .add(Items.BOWL)
-                .add(ItemTags.WOOL_CARPETS)
-                .remove(ItemTags.NON_FLAMMABLE_WOOD)
-                .build();
-
-        return FUELS_1_11;
-    }
-
-    public static FurnaceFuels1_11_2 getFuels_1_3_1() {
-        if (FUELS_1_3_1 == null)
-            FUELS_1_3_1 = new FurnaceFuels1_11_2.Builder()
-                .add(Items.LAVA_BUCKET)
-                .add(Blocks.COAL_BLOCK)
-                .add(Items.BLAZE_ROD)
-                .add(Items.COAL)
-                .add(Items.CHARCOAL)
-                .add(ItemTags.LOGS)
-                .add(ItemTags.PLANKS)
-                .add(ItemTags.WOODEN_STAIRS)
-                .add(ItemTags.WOODEN_TRAPDOORS)
-                .add(ItemTags.WOODEN_PRESSURE_PLATES)
-                .add(ItemTags.WOODEN_FENCES)
-                .add(ItemTags.FENCE_GATES)
-                .add(Blocks.NOTE_BLOCK)
-                .add(Blocks.BOOKSHELF)
-                .add(Blocks.JUKEBOX)
-                .add(Blocks.CHEST)
-                .add(Blocks.TRAPPED_CHEST)
-                .add(Blocks.CRAFTING_TABLE)
-                .add(Blocks.DAYLIGHT_DETECTOR)
-                .add(ItemTags.BANNERS)
-                .add(Items.BOW)
-                .add(Items.FISHING_ROD)
-                .add(Blocks.LADDER)
-                .add(Items.WOODEN_SHOVEL)
-                .add(Items.WOODEN_SWORD)
-                .add(Items.WOODEN_SPEAR)
-                .add(Items.WOODEN_HOE)
-                .add(Items.WOODEN_AXE)
-                .add(Items.WOODEN_PICKAXE)
-                .add(Items.STICK)
-                .add(ItemTags.SAPLINGS)
-                .add(Items.BOWL)
-                .remove(ItemTags.NON_FLAMMABLE_WOOD)
-                .build();
-
-        return FUELS_1_3_1;
-    }
-
-    public static FurnaceFuels1_11_2 getFuels_1_2_5() {
-        if (FUELS_1_2_5 == null)
-            FUELS_1_2_5 = new FurnaceFuels1_11_2.Builder()
-                .add(Items.LAVA_BUCKET)
-                .add(Blocks.COAL_BLOCK)
-                .add(Items.BLAZE_ROD)
-                .add(Items.COAL)
-                .add(Items.CHARCOAL)
-                .add(ItemTags.LOGS)
-                .add(ItemTags.PLANKS)
-                .add(ItemTags.WOODEN_STAIRS)
-                .add(ItemTags.WOODEN_TRAPDOORS)
-                .add(ItemTags.WOODEN_PRESSURE_PLATES)
-                .add(ItemTags.WOODEN_FENCES)
-                .add(ItemTags.FENCE_GATES)
-                .add(Blocks.NOTE_BLOCK)
-                .add(Blocks.BOOKSHELF)
-                .add(Blocks.JUKEBOX)
-                .add(Blocks.CHEST)
-                .add(Blocks.TRAPPED_CHEST)
-                .add(Blocks.CRAFTING_TABLE)
-                .add(Blocks.DAYLIGHT_DETECTOR)
-                .add(ItemTags.BANNERS)
-                .add(Items.BOW)
-                .add(Items.FISHING_ROD)
-                .add(Blocks.LADDER)
-                .add(Items.STICK)
-                .add(ItemTags.SAPLINGS)
-                .add(Items.BOWL)
-                .remove(ItemTags.NON_FLAMMABLE_WOOD)
-                .build();
-
-        return FUELS_1_2_5;
-    }
-
-    public static class Builder {
-
-        private final ArrayList<Item> values = new ArrayList<>();
-
-        public FurnaceFuels1_11_2 build() {
-            return new FurnaceFuels1_11_2(this.values);
+    public static void init() {
+        if (!LEGACY_FUELS.isEmpty()) {
+            throw new IllegalStateException("FurnaceFuels1_11_2 is already initialized");
         }
 
-        public FurnaceFuels1_11_2.Builder remove(final TagKey<Item> tag) {
-            BuiltInRegistries.ITEM.get(tag).ifPresent(items -> {
-                for (Holder<Item> item : items) {
-                    this.values.remove(item.value());
-                }
-            });
-            return this;
+        final JsonArray fuels = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("furnace-fuels-1.11.2.json").getAsJsonArray("");
+        for (JsonElement fuelElement : fuels) {
+            final JsonObject fuel = fuelElement.getAsJsonObject();
+            final ProtocolVersionRange versionRange = ProtocolVersionRange.fromString(fuel.get("version").getAsString());
+            if (fuel.has("tag")) {
+                LEGACY_FUELS.add(new Pair<>(new Fuel(null, TagKey.create(Registries.ITEM, Identifier.parse(fuel.get("tag").getAsString()))), versionRange));
+            } else {
+                final Identifier id = Identifier.parse(fuel.get("item").getAsString());
+                final Item item = BuiltInRegistries.ITEM.getOptional(id).orElseThrow(() -> new IllegalStateException("Unknown item: " + id));
+                LEGACY_FUELS.add(new Pair<>(new Fuel(item, null), versionRange));
+            }
+        }
+    }
+
+    /**
+     * Checks the item against the fuel list of the current target version, only meaningful for versions older than 1.14.
+     *
+     * @param itemStack the item to check
+     * @return whether the item could be burned in a furnace on the target version
+     */
+    public static boolean isFuel(final ItemStack itemStack) {
+        if (FUELS == null) {
+            FUELS = resolveFuels(ViaFabricPlus.api().targetVersion());
+        }
+        return FUELS.contains(itemStack.getItem());
+    }
+
+    /**
+     * Drops the resolved fuel list, must be called when the target version changes.
+     */
+    public static void reset() {
+        FUELS = null;
+    }
+
+    private static Set<Item> resolveFuels(final ProtocolVersion version) {
+        final Set<Item> fuels = new HashSet<>();
+        for (Pair<Fuel, ProtocolVersionRange> legacyFuel : LEGACY_FUELS) {
+            if (!legacyFuel.getSecond().contains(version)) {
+                continue;
+            }
+
+            final Fuel fuel = legacyFuel.getFirst();
+            if (fuel.item() != null) {
+                fuels.add(fuel.item());
+            } else {
+                BuiltInRegistries.ITEM.get(fuel.tag()).ifPresent(items -> {
+                    for (Holder<Item> item : items) {
+                        fuels.add(item.value());
+                    }
+                });
+            }
         }
 
-        public FurnaceFuels1_11_2.Builder add(final TagKey<Item> tag) {
-            BuiltInRegistries.ITEM.get(tag).ifPresent(items -> {
-                for (Holder<Item> item : items) {
-                    this.values.add(item.value());
-                }
-            });
-            return this;
-        }
+        // Nether wood didn't exist yet, but the modern tags above include it
+        BuiltInRegistries.ITEM.get(ItemTags.NON_FLAMMABLE_WOOD).ifPresent(items -> {
+            for (Holder<Item> item : items) {
+                fuels.remove(item.value());
+            }
+        });
+        return Set.copyOf(fuels);
+    }
 
-        public FurnaceFuels1_11_2.Builder add(final ItemLike itemLike) {
-            Item item = itemLike.asItem();
-            this.values.add(item);
-            return this;
-        }
-
+    private record Fuel(@Nullable Item item, @Nullable TagKey<Item> tag) {
     }
 
 }
