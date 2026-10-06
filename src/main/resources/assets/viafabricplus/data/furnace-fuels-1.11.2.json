@@ -82,15 +82,15 @@
     },
     {
       "item": "minecraft:bow",
-      "version": "*"
+      "version": ">= 1.11"
     },
     {
       "item": "minecraft:fishing_rod",
-      "version": "*"
+      "version": ">= 1.11"
     },
     {
       "item": "minecraft:ladder",
-      "version": "*"
+      "version": ">= 1.11"
     },
     {
       "item": "minecraft:stick",
@@ -102,7 +102,7 @@
     },
     {
       "item": "minecraft:bowl",
-      "version": "*"
+      "version": ">= 1.11"
     },
     {
       "item": "minecraft:wooden_shovel",
@@ -110,10 +110,6 @@
     },
     {
       "item": "minecraft:wooden_sword",
-      "version": ">= 1.3.1-1.3.2"
-    },
-    {
-      "item": "minecraft:wooden_spear",
       "version": ">= 1.3.1-1.3.2"
     },
     {

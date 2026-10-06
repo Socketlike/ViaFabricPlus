@@ -37,7 +37,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -67,12 +66,6 @@ public final class FurnaceFuels1_11_2 {
         }
     }
 
-    /**
-     * Checks the item against the fuel list of the current target version, only meaningful for versions older than 1.14.
-     *
-     * @param itemStack the item to check
-     * @return whether the item could be burned in a furnace on the target version
-     */
     public static boolean isFuel(final ItemStack itemStack) {
         if (FUELS == null) {
             FUELS = resolveFuels(ViaFabricPlus.api().targetVersion());
@@ -80,9 +73,6 @@ public final class FurnaceFuels1_11_2 {
         return FUELS.contains(itemStack.getItem());
     }
 
-    /**
-     * Drops the resolved fuel list, must be called when the target version changes.
-     */
     public static void reset() {
         FUELS = null;
     }
@@ -105,14 +95,7 @@ public final class FurnaceFuels1_11_2 {
                 });
             }
         }
-
-        // Nether wood didn't exist yet, but the modern tags above include it
-        BuiltInRegistries.ITEM.get(ItemTags.NON_FLAMMABLE_WOOD).ifPresent(items -> {
-            for (Holder<Item> item : items) {
-                fuels.remove(item.value());
-            }
-        });
-        return Set.copyOf(fuels);
+        return fuels;
     }
 
     private record Fuel(@Nullable Item item, @Nullable TagKey<Item> tag) {
